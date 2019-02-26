@@ -1,6 +1,7 @@
 const express = require('express')
 const app = express()
 const http = require('http')
+require('custom-env').env()
 const port = 3000
 
 app.get('/', function(req, res) {
