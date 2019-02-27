@@ -6,6 +6,7 @@ var authController = require('./auth');
 var authJwtController = require('./auth_jwt');
 db = require('./db')(); //global hack
 var jwt = require('jsonwebtoken');
+var dotenv = require('dotenv').config();
 
 var app = express();
 app.use(bodyParser.json());
@@ -91,9 +92,30 @@ router.post('/signin', function(req, res) {
         };
 });
 
-router.route('/movies', function (req, res) {
-    .get()
-}
+router.route('/movies')
+    .get(function (req, res) {
+        res.json({ status: 200, message: 'GET movies', headers: req.headers, query: req.query , env: process.env.UNIQUE_KEY });
+    })
+    .post(function(req, res) {
+        res.json({ status: 200, message: 'movie saved', headers: req.headers, query: req.query, env: process.env.UNIQUE_KEY });
+    })
+    .delete(function(req, res) {
+        var user = db.findOne(req.body.username);
+
+        if (!user) {
+            res.status(401).send({success: false, msg: 'Authentication failed. User not found.'});
+        }
+        else {
+            // check if password matches
+            if (req.body.password == user.password)  {
+                res.json({ status: 200, message: 'movie deleted', headers: req.headers, query: req.query, env: process.env.UNIQUE_KEY });
+            }
+            else {
+                res.status(401).send({success: false, msg: 'Authentication failed. Wrong password.'});
+            }
+        }
+    });
+
 
 app.use('/', router);
 app.listen(process.env.PORT || 8080);
