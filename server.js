@@ -111,8 +111,8 @@ router.route('/movies')
     .post(function(req, res) {
         res.json({ status: 200, message: 'movie saved', headers: req.headers, query: req.query, env: process.env.UNIQUE_KEY });
     })
-    .put(function(req, res) {
-
+    .put(authJwtController.isAuthenticated, function(req, res) {
+        res.json({ status: 200, message: 'movie updated', headers: req.headers, query: req.query, env: process.env.UNIQUE_KEY });
     })
     .delete(function(req, res) {
         var user = db.findOne(req.body.username);
