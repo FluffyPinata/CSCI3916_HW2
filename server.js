@@ -100,6 +100,10 @@ router.post('/signin', function(req, res) {
         };
 });
 
+router.all('/signin', function(req, res) {
+    res.json({success: false, message: 'HTTP method not supported.'});
+});
+
 router.route('/movies')
     .get(function (req, res) {
         res.json({ status: 200, message: 'GET movies', headers: req.headers, query: req.query , env: process.env.UNIQUE_KEY });
@@ -126,6 +130,10 @@ router.route('/movies')
             }
         }
     });
+
+router.all('movies', function(req, res) {
+    res.json({success: false, message: 'HTTP method not supported.'});
+});
 
 
 app.use('/', router);
