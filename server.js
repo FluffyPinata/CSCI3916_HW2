@@ -33,8 +33,8 @@ function getJSONObject(req) {
     return json;
 }
 
-router.get('/', function(req, res) {
-   res.json({success: false, message: 'please specify a route'})
+router.all('/', function(req, res) {
+   res.json({success: false, message: 'Please specify a route.'})
 });
 
 router.route('/post')
@@ -76,6 +76,10 @@ router.post('/signup', function(req, res) {
     }
 });
 
+router.all('/signup', function(req, res) {
+    res.json({success: false, message: 'HTTP method not supported.'});
+});
+
 router.post('/signin', function(req, res) {
 
         var user = db.findOne(req.body.username);
@@ -102,6 +106,9 @@ router.route('/movies')
     })
     .post(function(req, res) {
         res.json({ status: 200, message: 'movie saved', headers: req.headers, query: req.query, env: process.env.UNIQUE_KEY });
+    })
+    .put(function(req, res) {
+
     })
     .delete(function(req, res) {
         var user = db.findOne(req.body.username);
