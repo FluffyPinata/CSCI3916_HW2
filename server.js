@@ -33,6 +33,10 @@ function getJSONObject(req) {
     return json;
 }
 
+router.get('/', function(req, res) {
+   res.json({success: false, message: 'please specify a route'})
+});
+
 router.route('/post')
     .post(authController.isAuthenticated, function (req, res) {
             console.log(req.body);
